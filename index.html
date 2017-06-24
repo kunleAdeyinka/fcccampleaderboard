@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fcc Camper Leaderboard</title>
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+      var Leadertable = React.createClass({
+        change(sort){
+          this.props.change(sort);
+        },
+        displayCampers(key, count){
+            var camper = this.props.campers[key];
+            return (
+                    <tr key={key}>
+                      <td>{count}</td>
+                      <td>{camper.username}, {camper.img}</td>
+                      <td>{camper.recent}</td>
+                      <td>{camper.alltime}</td>
+                    </tr>
+            );
+        },
+        render(){
+          return (
+              <div>
+                    <table className="table table-bordered">
+                        <caption className="text-center">Leaderboard</caption>
+                          <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Camper Name</th>
+                                <th><a onClick={this.change.bind(this, 'recent')} href="#">Points in past 30 days</a></th>
+                                <th><a onClick={this.change.bind(this, 'alltime')} href="#">All  time points</a></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {Object.keys(this.props.campers).map((key, i) => {
+                                return this.displayCampers(key, ++i);
+                              })}
+                          </tbody>
+
+                    </table>
+              </div>
+          );
+        }
+
+      });
+
+      var Leaderboard = React.createClass({
+
+        handleChange(sort){
+           this.getData(sort);
+        },
+        getInitialState(){
+           return {
+             campers: [],
+             sort: 'recent'
+           }
+        },
+        getData(sort){
+            var apiUrl = `https://fcctop100.herokuapp.com/api/fccusers/top/${sort}`;
+             axios.get(apiUrl).then((response) => {
+               this.setState({campers:response.data}, function(){
+                  this.setState({sort:sort});
+               });
+             }).catch((error) => {
+               console.log(error.data);
+             })
+        },
+        componentWillMount(){
+          this.getData(this.state.sort);
+        },
+        render(){
+          return (
+            <Leadertable campers={this.state.campers} change={this.handleChange}/>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <div className="container">
+            <div className="page-header">
+              <h1>FreeCode Camp & React Leaderboard</h1>
+            </div>
+            <Leaderboard />
+        </div>,
+        document.getElementById('root')
+      );
+    </script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
