@@ -1,7 +1,7 @@
 # FCCCampLeaderboard
 
 * This web application shows how many brownie points Free code Camp campers have earned in the past 30 days, and how many they've earned total.
-* url:
+* https://codepen.io/aadeyinka007/full/owGjgV
 
 ## Built With
 * [React.js](https://facebook.github.io/react/) - The frontend framework used

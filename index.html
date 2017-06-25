@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
-    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/cerulean/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
@@ -25,7 +25,12 @@
             return (
                     <tr key={key}>
                       <td>{count}</td>
-                      <td>{camper.username}, {camper.img}</td>
+                      <td>
+                          <a href={"https://www.freecodecamp.com/"+camper.username} target="_blank">
+                              <img src={camper.img} className="userimg"/>
+                              <span>{camper.username}</span>
+                          </a>
+                      </td>
                       <td>{camper.recent}</td>
                       <td>{camper.alltime}</td>
                     </tr>
@@ -34,7 +39,7 @@
         render(){
           return (
               <div>
-                    <table className="table table-bordered">
+                    <table className="table  table-striped table-bordered">
                         <caption className="text-center">Leaderboard</caption>
                           <thead>
                               <tr>
